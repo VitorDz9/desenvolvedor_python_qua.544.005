@@ -38,22 +38,64 @@ while True:
                 telefone,
                 cpf
             }
-            usuarios.append(usuario)
+            usuarios.append(usuario) 
 
             print("Usuário cadastrado com sucesso!")
 
             
         case"2":
             if usuarios ==[]:
-                print("")
+                print("Nenhum usuário cadastrado!")
+            else:
+                for usuario in usuarios:
+                    print("--------------------------")
+                    print(f"Nome:{usuario['nome']}")
+                    print(f"Email:{usuario['email']}")
+                    print(f"Telefone:{usuario['telefone']}")
+                    print(f"CPF:{usuario['CPf']}")
         case"3":
-            print("Alterar usuários")
+            if usuarios==[]:
+                print("Nenhum usuário cadastrado!")
+            else:
+                cpf_busca = input("Digite o Cpf do usuário que deseja alterar:")
+                encontrado = False 
+                for usuario in usuarios:
+                    if usuario["cpf"]==cpf_busca:
+                        print("Digite os novos dados:")
+                        usuario["nome"]=input("Novo nome:")
+
+                        usuario["email"]=input("Novo email:")
+                        usuario["telefone"]=input("Novo telefone:")
+                        usuario["cpf"]=input("Novo CPF:")
+
+                        print("Usuário alterado com sucesso!")
+                        encontrado = True
+                        break
+                if encontrado==False:
+                    print("Usuário não encontrado!")
         case"4":
-            print("Excluir usuários")
+            if usuario==[]:
+                print("Nenhum usuário cadastrado!")
+            else:
+                cpf_busca=input("Digite o CPF do usuário que deseja excluir:")
+                encontrado= False
+
+                for usuario in usuarios:
+                    if usuario["cpf"]== cpf_busca:
+                        usuarios.remove(usuario)
+                        print("Usuário excluido com sucesso!")
+                        encontrado=True
+                        break
+                    if encontrado==False:
+                        print("Usuário não encontrado")
+
+
         case"5":
-            print("Encerrar programa")
+            print("Programa encerrado")
             break
-        case _:
-            print("Opção inválida!")
-    
+        case"6":
+            with open("usuarios.json", "w", encoding="utf-8") as arquivo:
+                json.dump(usuarios, arquivo, indent=4,ensure_ascii=False)
+            print("Usuários gravados com sucesso!")  
+                      
     
