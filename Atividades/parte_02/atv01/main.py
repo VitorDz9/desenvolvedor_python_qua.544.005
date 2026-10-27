@@ -9,93 +9,94 @@ crie um programa que faça as seguintes operações :
 -Abre arquivo .json e lista todos os usuários cadastrados nele 
 '''
 #bibliotecas 
-import os 
-import json 
-
-#limpar terminal 
-os.system("cls" if os.name == "nt" else "clear" )
- 
+import os
+import json
+#lista
 usuarios=[]
-while True:
-    print("1 - Cadastrar usuário")
-    print("2 - Listar usuários.")
-    print("3 - Alterar usuários.")
-    print("4 - Excluir usuários. ")
-    print("5- Encerrar programa.") 
-    print("6-Gravar dados em JSON")
 
-    opcao = input("Escolha uma opção ")
+#limpar terminal
+os.system("cls" if os.name == "nt" else "clear")
+
+#loop  
+while True:
+    #exibir menu
+    print("1 - Cadastrar novo usuário")
+    print("2 - Lista usuários cadastrados")
+    print("3 - Alterar dados do usuário")
+    print("4 - Excluir um usuário")
+    print("5- Gravar todos os usuários em .json")
+    print("6 - Abrir arquivo .json")
+    print("7 - Sair do programa ")
+    opcao = input("Opção desejada:").strip()
+    os.system("cls" if os.name=="nt" else "clear")
     match opcao:
         case"1":
-            nome = input("Informe o nome do usuário:").strip().title()
-            email =input("Informe o email do usuário:").strip()
-            telefone = input("Informe o telefone do usuário:").strip()
-            cpf = input("Informe o CPF do usuário:").strip()
+            #inicializar um novo dicionario
+            usuario = {}
+            #informa dados
+            usuario['nome'] = input("Informe o nome do usuário:").strip().title()
+            usuario['email']= input("Informe o email:").strip().title()
+            usuario['telefone']=input("Informe o telefone:").strip().title()
+            usuario['cpf']=input("Informe o CPF:").strip()
 
-            usuario = {
-                nome,
-                email,
-                telefone,
-                cpf
-            }
-            usuarios.append(usuario) 
+            #adicionar novo usuário a lista
+            usuarios.append(usuario)
+            os.system("cls"if os.name == "nt" else "clear")
+            print(f"{usuario.get('nome')} cadastrado com sucesso")
 
-            print("Usuário cadastrado com sucesso!")
-
-            
+            continue
         case"2":
-            if usuarios ==[]:
-                print("Nenhum usuário cadastrado!")
+            if usuarios:
+                for i, usuario in enumerate(usuarios):
+                    print(f"ID:{i}")
+                    for chave,valor in usuario.items():
+                        print(f"{chave.capitalize()}: {valor}.")
+                print(f"{'-'*40}")
             else:
-                for usuario in usuarios:
-                    print("--------------------------")
-                    print(f"Nome:{usuario['nome']}")
-                    print(f"Email:{usuario['email']}")
-                    print(f"Telefone:{usuario['telefone']}")
-                    print(f"CPF:{usuario['CPf']}")
+                print("Não foram encontrados usuários cadastrados.")
+            
+            continue
         case"3":
-            if usuarios==[]:
-                print("Nenhum usuário cadastrado!")
-            else:
-                cpf_busca = input("Digite o Cpf do usuário que deseja alterar:")
-                encontrado = False 
-                for usuario in usuarios:
-                    if usuario["cpf"]==cpf_busca:
-                        print("Digite os novos dados:")
-                        usuario["nome"]=input("Novo nome:")
-
-                        usuario["email"]=input("Novo email:")
-                        usuario["telefone"]=input("Novo telefone:")
-                        usuario["cpf"]=input("Novo CPF:")
-
-                        print("Usuário alterado com sucesso!")
-                        encontrado = True
-                        break
-                if encontrado==False:
-                    print("Usuário não encontrado!")
+            try:
+                indice = int(input("Informe o ID do usuário a atualizar:"))
+                for chave, valor in usuarios[indice].items():
+                    print(f"{chave.capitalize()}: {valor}.")
+                chave = input("Qual chave deseja alterar o valor ?").strip().lower()
+                usuarios[indice][chave] = input("Informe um novo valor:").strip()
+                os.system("cls" if os.name == "nt" else "clear")
+                print(f"Dados de {usuarios[indice][chave]} de {usuarios[indice].get('nome')}alterado com sucesso!")
+                continue
+            except Exception as e:
+                print(f"Não foi possivel atualizar os dados. {e}.")
         case"4":
-            if usuario==[]:
-                print("Nenhum usuário cadastrado!")
-            else:
-                cpf_busca=input("Digite o CPF do usuário que deseja excluir:")
-                encontrado= False
-
-                for usuario in usuarios:
-                    if usuario["cpf"]== cpf_busca:
-                        usuarios.remove(usuario)
-                        print("Usuário excluido com sucesso!")
-                        encontrado=True
-                        break
-                    if encontrado==False:
-                        print("Usuário não encontrado")
-
-
+            try:
+                indice =int(input("Informe o ID a ser excluido"))
+                del usuarios[indice]
+                os.system("cls") if os.name == "nt" else "clear"
+                print("Usuários excluído com sucesso!")
+                continue 
+            except Exception as e   :
+                print(f"Não foi possivel excluir. {e}") 
         case"5":
-            print("Programa encerrado")
-            break
+            arquivo = input("Informe o nome do arquivo:").strip()
+            with open(f"atv01/{arquivo}.json","w",encoding="utf-8") as f:
+                json.dump(usuarios, f) # dump = comando de gravar da biblioteca
+            os.system("cls" if os.name == "nt" else "clear")
+            print("Dados gravados com sucesso!")
+            continue
         case"6":
-            with open("usuarios.json", "w", encoding="utf-8") as arquivo:
-                json.dump(usuarios, arquivo, indent=4,ensure_ascii=False)
-            print("Usuários gravados com sucesso!")  
-                      
-    
+            try:
+                arquivo= input("Informe o arquivo que deseja abrir :").strip()
+                with open(f"atv01/{arquivo}.json","r",encoding="utf-8") as f:
+                    usuarios= json.load(f)
+                os.system("cls" if os.name=="nt" else "clear")
+                print("Dados importados com sucesso !")
+                continue    
+            except Exception as e:
+                print(f"Não foi possivel abrir o arquivo. {e}.")
+        case"7":
+            break
+        case _:
+            print("Opção inválida.")
+            continue
+            
