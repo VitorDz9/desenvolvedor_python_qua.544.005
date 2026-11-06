@@ -59,7 +59,7 @@ class Conta(IConta):
 
     @n_conta.setter
     def n_conta(self,n_conta):
-        self.__n_conta =n_conta
+        self.__n_conta = n_conta
 
     @property
     def saldo(self):
@@ -72,16 +72,16 @@ class Conta(IConta):
         #métodos da interface
     def consultar_conta(self):
         print(f"{'-'*20} Dados da conta"['-'*20])
-        print(f"Nome do titular: {self._nome}")
-        print(f"CPF do titular: {self._cpf}")
-        print(f"Agência:: {self.__agencia}")
-        print(f"Conta:{self._n_conta}")
-        print(f"Saldo: R${self._saldo:.2f}")
+        print(f"Nome do titular: {self.titular}")
+        print(f"CPF do titular: {self.cpf}")
+        print(f"Agência:: {self.agencia}")
+        print(f"Conta:{self.n_conta}")
+        print(f"Saldo: R${self.saldo:.2f}")
 
     def depositar(self, valor):
-       self.__saldo+= valor     
+       self.saldo+= valor     
        return self.__saldo
 
     def sacar(self,valor):
-        self.__saldo-= valor 
+        self.saldo-= valor 
         return self.__saldo
