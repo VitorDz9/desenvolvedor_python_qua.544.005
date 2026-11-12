@@ -5,7 +5,7 @@ from datetime import date
 
 def main():
     hoje= date.today().strftime("%d/%m/%Y")
-    auto.PAUSE = 2
+    auto.PAUSE = 1
 
     auto.hotkey("win","r")
     auto.write("cmd")
